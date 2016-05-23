@@ -161,7 +161,7 @@ public class GitHubSCMSource extends AbstractGitSCMSource {
     @Override
     protected List<RefSpec> getRefSpecs() {
         return new ArrayList<RefSpec>(Arrays.asList(new RefSpec("+refs/heads/*:refs/remotes/origin/*"),
-                new RefSpec("+refs/pull/*/merge:refs/remotes/origin/pr/*")));
+                new RefSpec("+refs/pull/*/head:refs/remotes/origin/pr/*")));
     }
 
     /**
@@ -414,7 +414,7 @@ public class GitHubSCMSource extends AbstractGitSCMSource {
         GHRef ref;
         if (head instanceof PullRequestSCMHead) {
             int number = ((PullRequestSCMHead) head).getNumber();
-            ref = repo.getRef("pull/" + number + "/merge");
+            ref = repo.getRef("pull/" + number + "/head");
             // getPullRequests makes an extra API call, but we need its current .base.sha
             String trustedBase = trustedReplacement(repo, repo.getPullRequest(number));
             if (trustedBase != null) {
